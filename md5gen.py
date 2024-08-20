@@ -64,7 +64,7 @@ def check_md5sum(file_path, checksum):
 
 def generate_md5_file(file_name="checksum.md5", directory="."):
     with open(file_name, "w") as checksum_file:
-        for root, dirs, files, root_fd in os.fwalk(
+        for root, dirs, files in os.walk(
             directory
         ):  # start walking in current path or directory, you can parameterize this if you want
             for file in files:
@@ -75,7 +75,7 @@ def generate_md5_file(file_name="checksum.md5", directory="."):
                     continue
                 dir_path = "%s%s" % (root, os.path.sep)
                 md5_digest = generate_md5(f"{dir_path}{file}")
-                clean_dir_path = re.sub("^\.\/", "", dir_path)
+                clean_dir_path = re.sub(r"^\.(\/|\\)", "", dir_path)
                 checksum_file.write(f"{md5_digest}  {clean_dir_path}{file}\n")
                 checksum_file.flush()
 
@@ -84,7 +84,7 @@ def check_md5_file(file_name="checksum.md5"):
     with open(file_name, "r") as checksum_file:
         s = checksum_file.readline()
         while s:
-            v = re.split("\W\W", s, maxsplit=1)
+            v = re.split(r"\W\W", s, maxsplit=1)
             validation_result = check_md5sum(checksum=v[0], file_path=v[1].rstrip())
             s = checksum_file.readline()
 

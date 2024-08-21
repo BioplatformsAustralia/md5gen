@@ -63,6 +63,7 @@ def check_md5sum(file_path, checksum):
 
 
 def generate_md5_file(file_name="checksum.md5", directory="."):
+    counter = 0
     with open(file_name, "w") as checksum_file:
         for root, dirs, files in os.walk(
             directory
@@ -78,6 +79,8 @@ def generate_md5_file(file_name="checksum.md5", directory="."):
                 clean_dir_path = re.sub(r"^\.(\/|\\)", "", dir_path)
                 checksum_file.write(f"{md5_digest}  {clean_dir_path}{file}\n")
                 checksum_file.flush()
+                counter += 1
+    print(f"{counter} items checksummed")
 
 
 def check_md5_file(file_name="checksum.md5"):

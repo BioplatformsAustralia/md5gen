@@ -125,3 +125,6 @@ Cross platform tool to generate and check MD5 files
 if __name__ == "__main__":
     # execute only if run as a script
     main()
+
+    if os.name == 'nt':
+        input("Press Enter to exit...")
